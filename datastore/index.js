@@ -3,6 +3,11 @@ const path = require('path');
 const _ = require('underscore');
 const counter = require('./counter');
 
+// Thomas Notes:
+// replace items with a datastore, dataDir
+// dataDir = index.js/id.txt
+// const count = require("./datastore/counter.txt");
+
 var items = {};
 
 // Public API - Fix these CRUD functions ///////////////////////////////////////
@@ -12,6 +17,17 @@ exports.create = (text, callback) => {
   items[id] = text;
   callback(null, { id, text });
 };
+
+// Thomas Notes:
+// replace items using fs
+// use fs.writeFile() to write text to with the id in the name of the file
+  // fs.writeFile(exports.counterFile, counterString, (err) => {
+  //   if (err) {
+  //     throw ('error writing counter');
+  //   } else {
+  //     callback(null, counterString);
+  //   }
+  // });
 
 exports.readAll = (callback) => {
   var data = _.map(items, (text, id) => {
