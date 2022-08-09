@@ -15,7 +15,7 @@ var counter = 0;
 // Wikipedia entry on Leading Zeros and check out some of code links:
 // https://www.google.com/search?q=what+is+a+zero+padded+number%3F
 
-const zeroPaddedNumber = (num) => {
+exports.zeroPaddedNumber = (num) => {
   return sprintf('%05d', num);
 };
 
@@ -30,7 +30,7 @@ const readCounter = (callback) => {
 };
 
 const writeCounter = (count, callback) => {
-  var counterString = zeroPaddedNumber(count);
+  var counterString = exports.zeroPaddedNumber(count);
   fs.writeFile(exports.counterFile, counterString, (err) => {
     if (err) {
       throw ('error writing counter');
