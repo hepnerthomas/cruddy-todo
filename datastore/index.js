@@ -65,7 +65,6 @@ exports.readOne = (id, callback) => {
   // }
   const filename = id + '.txt';
   const chosenFile = path.join(exports.dataDir, filename);
-  console.log(chosenFile);
   fs.readFile(chosenFile, (err, fileData) => {
     if (err) {
       callback(new Error(`No item with id: ${id}`));
@@ -76,24 +75,43 @@ exports.readOne = (id, callback) => {
 };
 
 exports.update = (id, text, callback) => {
-  var item = items[id];
-  if (!item) {
-    callback(new Error(`No item with id: ${id}`));
-  } else {
-    items[id] = text;
-    callback(null, { id, text });
-  }
+  let fileDir = path.join(exports.dataDir, id + '.txt');
+  fs.readFile(fileDir, (err, fileData) => {
+    if (err) {
+      callback(new Error(`No item with id: ${id}`));
+    } else {
+      fs.writeFile(fileDir, text, (err) => {
+        if (err) {
+          throw ('Error in updating file.');
+        }
+        callback(null, { id, text });
+      });
+    }
+  });
+  // var item = items[id];
+  // if (!item) {
+  //   callback(new Error(`No item with id: ${id}`));
+  // } else {
+  //   items[id] = text;
+  //   callback(null, { id, text });
+  // }
 };
 
 exports.delete = (id, callback) => {
-  var item = items[id];
-  delete items[id];
-  if (!item) {
-    // report an error if item not found
-    callback(new Error(`No item with id: ${id}`));
-  } else {
-    callback();
-  }
+
+  // construct the filePath with dataDir and id using path.join
+  // remote the file with fs.unlink
+    // if err, throw error like in readOne
+    // otherwise, call the callback function without any inputs
+
+    let fileDir = path.join(exports.dataDir, id + '.txt');
+    fs.unlink(fileDir, (err) => {
+      if (err) {
+        callback(new Error(`No item with id: ${id}`));
+      } else {
+        callback();
+      }
+    });
 };
 
 // Config+Initialization code -- DO NOT MODIFY /////////////////////////////////
